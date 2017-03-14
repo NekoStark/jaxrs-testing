@@ -1,2 +1,2 @@
 FROM mysql
-ADD restdb -init.sqll /docker -entrypoint -initdb.d/
+ADD restdb-init.sql /docker-entrypoint-initdb.d/

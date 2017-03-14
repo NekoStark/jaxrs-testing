@@ -12,7 +12,7 @@ public class UserEndpointIT extends ServiceIT {
 
 	@Test
 	public void testGet () { 
-		get("http://localhost:8080/jaxrs-testing/rest/1.0/users/"+user.getId())
+		get("/users/"+user.getId())
 		.then()
 		.assertThat()
 		.body( "id", equalTo(Integer.valueOf(1)),

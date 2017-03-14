@@ -19,7 +19,8 @@ import jaxrs.testing.service.UserEndpoint;
 
 
 public class UserEndpointTest extends ServiceUnitTest{
-
+ 
+	
 	private UserDao userDao;
 	private User user;
 

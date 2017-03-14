@@ -2,6 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>it.unifi.ing</groupId>
+	<artifactId>jaxrs-testing</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
@@ -11,11 +12,21 @@
 			<artifactId>javaee-api</artifactId>
 			<version>7.0</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.5</version>
+		</dependency>
+		
+		
+		<!-- FIXME solo in test? -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		
 
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
@@ -23,55 +34,54 @@
 			<version>3.0.11.Final</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>tjws</artifactId>
 			<version>2.3.5.Final</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-jackson-provider</artifactId>
 			<version>3.0.11.Final</version>
-			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<version>3.0.2</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.5</version>
-		</dependency>
+		
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.11</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-all</artifactId>
 			<version>1.10.19</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.codehaus.groovy</groupId>
 			<artifactId>groovy-all</artifactId>
 			<version>2.4.5</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>5.2.6.Final</version>
 			<scope>test</scope>
 		</dependency>
-
-		
 
 		<dependency>
 			<groupId>mysql</groupId>
@@ -97,7 +107,7 @@
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
@@ -124,10 +134,12 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<copy file="\${basedir}/datasource/restdb-ds.xml" tofile="\${basedir}/docker/wildfly/restdb-ds.xml" />
+								<copy 
+									file="${basedir}/datasource/restdb-ds.xml" 
+									tofile="${basedir}/docker/wildfly/restdb-ds.xml" />
 								<copy
-									file="\${project.build.directory}/\${project.build.finalName}.war"
-									tofile="\${basedir}/docker/wildfly/\${project.artifactId}.war" />
+									file="${project.build.directory}/${project.build.finalName}.war"
+									tofile="${basedir}/docker/wildfly/${project.artifactId}.war" />
 							</tasks>
 						</configuration>
 					</execution>
@@ -139,47 +151,50 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.17.2</version>
 				<configuration>
-					<image>
-						<name>mysqldb</name>
-						<build>
-							<dockerFileDir>\${project.basedir}/docker/mysql</dockerFileDir>
-						</build>
-						<run>
-							<ports>
-								<port>3307:3306</port>
-							</ports>
-							<env>
-								<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
-							</env>
-							<wait>
-								<time>50000</time>
-								<log>mysqld: ready for connections</log>
-							</wait>
-						</run>
-					</image>
-					<image>
-						<name>wildfly -test</name>
-						<build>
-							<dockerFileDir>${project.basedir}/docker/wildfly</dockerFileDir>
-						</build>
-						<run>
-							<ports>
-								<port>8080:8080</port>
-							</ports>
-							<dependsOn>mysqldb</dependsOn>
-							<links>
-								<link>mysqldb:database</link>
-							</links>
-							<cmd>
-								<shell>./wait-for-it.sh -t 0 database:3306 --
-									/opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0</shell>
-							</cmd>
-							<wait>
-								<time>50000</time>
-								<log>Deployed</log>
-							</wait>
-						</run>
-					</image>
+					<images>
+						<image>
+							<name>mysqldb</name>
+							<build>
+								<dockerFileDir>${project.basedir}/docker/mysql</dockerFileDir>
+							</build>
+							<run>
+								<ports>
+									<port>3307:3306</port>
+								</ports>
+								<env>
+									<MYSQL_ROOT_PASSWORD>root</MYSQL_ROOT_PASSWORD>
+								</env>
+								<wait>
+									<time>50000</time>
+									<log>mysqld: ready for connections</log>
+								</wait>
+							</run>
+						</image>
+						<image>
+							<name>wildfly-test</name>
+							<build>
+								<dockerFileDir>${project.basedir}/docker/wildfly</dockerFileDir>
+							</build>
+							<run>
+								<ports>
+									<port>8080:8080</port>
+								</ports>
+								<dependsOn>mysqldb</dependsOn>
+								<links>
+									<link>mysqldb:database</link>
+								</links>
+								<cmd>
+									<shell>./wait-for-it.sh -t 0 database:3306 --
+										/opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0</shell>
+								</cmd>
+								<wait>
+									<time>50000</time>
+									<log>Deployed</log>
+								</wait>
+							</run>
+						</image>
+					</images>
+<!-- 					<showLogs>true</showLogs> -->
 				</configuration>
 				<executions>
 					<execution>
@@ -207,6 +222,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<artifactId>jaxrs-testing</artifactId>
 </project>

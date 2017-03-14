@@ -2,25 +2,12 @@ package jaxrs.testing.dao;
 
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import jaxrs.testing.model.User;
 
-public class UserDao {
+public interface UserDao {
+
+	public List<User> query();
+	public User find(Long id);
+	public void save(User user);
 	
-	@PersistenceContext
-	private EntityManager entityManager;
-	
-	public List<User> query(){
-		return entityManager
-				.createQuery("from User u ", User.class)
-				.getResultList();
-	}
-	public User find(Long id){
-		return entityManager.find(User.class,id);
-	}
-	public void save(User user){
-		entityManager.persist(user);
-	}
 }
