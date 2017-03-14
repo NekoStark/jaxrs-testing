@@ -71,10 +71,10 @@ public class UserEndpointTest extends ServiceUnitTest{
 	}
 
 	@Override
-	protected void initTestData() {
-		user = new User();
-		user.setId(new Long(1));
-		user.setEmail("test@unifi.it");
-		user.setUserName("username");
+	protected void initTestData() throws Exception {
+	  user = new User( Long.valueOf(1) );
+	  user.setUserName("testuser");
+	  user.setEmail("testuser@email.it");
+	  user.setPassword("mypass");
 	}
 }

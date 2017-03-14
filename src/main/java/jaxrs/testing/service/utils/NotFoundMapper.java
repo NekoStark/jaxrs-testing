@@ -10,7 +10,6 @@ public class NotFoundMapper implements ExceptionMapper<NotFoundException> {
 
 	@Override
 	public Response toResponse(NotFoundException exception) {
-		System.out.println("\n\n\nLOLLOOOOOOOOOOOOOO\n\n\n");
 		if (exception.getCause() instanceof NumberFormatException) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}

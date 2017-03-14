@@ -34,6 +34,6 @@ public abstract class ServiceUnitTest {
 	public void tearDown () {
 		server.stop(); 
 	}
-	protected abstract void initTestData();
+	protected abstract void initTestData() throws Exception;
 	protected abstract Set<Object> getEndpoints() throws Exception; 
 }

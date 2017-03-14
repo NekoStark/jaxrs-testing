@@ -6,7 +6,7 @@
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
         
     <persistence-unit name="production">
-		<jta-data-source>restDS</jta-data-source> 
+		<jta-data-source>restdbDS</jta-data-source> 
 		
         <properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
