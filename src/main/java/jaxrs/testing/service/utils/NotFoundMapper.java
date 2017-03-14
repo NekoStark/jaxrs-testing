@@ -15,4 +15,5 @@ public class NotFoundMapper implements ExceptionMapper<NotFoundException> {
 		}
 		return Response.status(Response.Status.NOT_FOUND).build();
 	}
+	
 }

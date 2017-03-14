@@ -16,65 +16,58 @@ import jaxrs.testing.dao.UserDao;
 import jaxrs.testing.model.User;
 import jaxrs.testing.service.UserEndpoint;
 
+public class UserEndpointTest extends ServiceUnitTest {
 
-
-public class UserEndpointTest extends ServiceUnitTest{
- 
-	
 	private UserDao userDao;
 	private User user;
 
-
 	@Test
-	public void testGet () { 
+	public void testGet() {
 		when(userDao.find(user.getId())).thenReturn(user);
-		get("/users/"+user.getId())
-		.then()
-		.assertThat()
-		.body("id", equalTo(user.getId().intValue())) .and()
-		.body("userName", equalTo(user.getUserName())) .and()
-		.body("email", equalTo(user.getEmail())) .and()
-		.body("password", nullValue());
+		get("/users/" + user.getId())
+			.then()
+			.assertThat()
+			.body("id", equalTo(user.getId().intValue()))
+				.and()
+			.body("userName", equalTo(user.getUserName()))
+				.and()
+			.body("email", equalTo(user.getEmail()))
+				.and()
+			.body("password", nullValue());
 	}
 
 	@Test
-	public void testGetWithError() { 
+	public void testGetWithError() {
 		get("/users/a")
-		.then()
-		.statusCode(400);
+			.then()
+			.statusCode(400);
 
-		get("/users/"+Long.valueOf(-1))
-		.then()
-		.statusCode(400);
-		
-	
+		get("/users/" + Long.valueOf(-1))
+			.then()
+			.statusCode(400);
+
 	}
-	
-	
+
 	@Test
-	public void testGetNotFound() { 
-		
+	public void testGetNotFound() {
 		get("/users/9999")
-		.then()
-		.statusCode(404);
+			.then()
+			.statusCode(404);
 	}
-
-
-
 
 	@Override
 	protected Set<Object> getEndpoints() throws Exception {
 		userDao = mock(UserDao.class);
-		UserEndpoint userEndpoint = new UserEndpoint(); 
-		FieldUtils.writeField(userEndpoint , "userDao", userDao , true); 
+		UserEndpoint userEndpoint = new UserEndpoint();
+		FieldUtils.writeField(userEndpoint, "userDao", userDao, true);
 		return Collections.singleton(userEndpoint);
 	}
 
 	@Override
 	protected void initTestData() throws Exception {
-	  user = new User( Long.valueOf(1) );
-	  user.setUserName("testuser");
-	  user.setEmail("testuser@email.it");
-	  user.setPassword("mypass");
+		user = new User(Long.valueOf(1));
+		user.setUserName("testuser");
+		user.setEmail("testuser@email.it");
+		user.setPassword("mypass");
 	}
 }

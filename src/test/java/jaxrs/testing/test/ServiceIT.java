@@ -22,7 +22,7 @@ public abstract class ServiceIT {
 		entityManager.getTransaction().commit();
 		entityManager.clear();
 		entityManager.getTransaction().begin();
-		
+
 		RestAssured.baseURI = "http://localhost";
 		RestAssured.port = 8080;
 		RestAssured.basePath = "/jaxrs-testing/rest/1.0";
