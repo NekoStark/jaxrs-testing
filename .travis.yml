@@ -13,4 +13,4 @@ cache:
  - '$HOME/.m2/repository'
 
 script:
-- mvn -f chirper/pom.xml clean verify
+- mvn clean verify
