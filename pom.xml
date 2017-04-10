@@ -186,7 +186,7 @@
 							</run>
 						</image>
 					</images>
-<!-- 					<showLogs>true</showLogs> -->
+ 					<showLogs>true</showLogs>
 				</configuration>
 				<executions>
 					<execution>
