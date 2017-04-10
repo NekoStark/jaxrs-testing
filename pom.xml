@@ -169,7 +169,9 @@
 								<ports>
 									<port>8080:8080</port>
 								</ports>
-								<dependsOn>mysqldb</dependsOn>
+								<dependsOn>
+									<container>mysqldb</container>
+								</dependsOn>
 								<links>
 									<link>mysqldb:database</link>
 								</links>
