@@ -7,7 +7,7 @@
 
 	<datasource jndi-name="restdbDS"
 		enabled="true" use-java-context="true" pool-name="MySQLDS">
-		<connection-url>jdbc:mysql://database:3307/restdb</connection-url>
+		<connection-url>jdbc:mysql://database:3306/restdb</connection-url>
 		<driver>mysql</driver>
 		<security>
 			<user-name>root</user-name>
